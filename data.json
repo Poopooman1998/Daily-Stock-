@@ -3,22 +3,22 @@
     "date": "2026 / 06 / 20",
     "weekday": "星期六",
     "status": "已收盤 13:30",
-    "updated": "17:30",
-    "asof": "2026-06-20 17:30 (GMT+8)"
+    "updated": "17:58",
+    "asof": "2026-06-20 17:58 (GMT+8)"
   },
   "taiex": {
-    "value": "0.00",
-    "change": "0.00",
-    "pct": "+0.00%",
-    "dir": "flat",
-    "amount": "0",
+    "value": "46,465.20",
+    "change": "587.81",
+    "pct": "+1.28%",
+    "dir": "up",
+    "amount": "16,062",
     "rangeLow": "23,988",
     "rangeHigh": "24,201",
-    "prevClose": "0.00",
-    "prevCloseNum": 0,
+    "prevClose": "45,877.39",
+    "prevCloseNum": 45877.39,
     "intraday": [
-      0,
-      0
+      45877.39,
+      46465.2
     ],
     "advancers": 584,
     "unchanged": 107,
@@ -30,9 +30,9 @@
   "tickers": [
     {
       "name": "加權指數",
-      "value": "0.00",
-      "pct": "+0.00%",
-      "dir": "flat"
+      "value": "46,465.20",
+      "pct": "+1.28%",
+      "dir": "up"
     },
     {
       "name": "櫃買",

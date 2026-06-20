@@ -1,0 +1,35 @@
+name: 每日更新台股資料
+
+# 每個交易日台北時間 15:10 跑一次(UTC 07:10);手動也可從 Actions 頁面觸發
+on:
+  schedule:
+    - cron: '10 7 * * 1-5'   # 週一~週五
+  workflow_dispatch:
+
+permissions:
+  contents: write            # 允許把更新後的 data.json 推回 repo
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 抓取資料並產生 data.json
+        run: node scripts/build-data.js
+
+      - name: 若有變動則提交
+        run: |
+          if [[ -n "$(git status --porcelain data.json)" ]]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add data.json
+            git commit -m "chore: 更新台股資料 $(date -u +%Y-%m-%d)"
+            git push
+          else
+            echo "data.json 無變動,略過提交"
+          fi

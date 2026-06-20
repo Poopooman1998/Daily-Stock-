@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "date": "2026 / 06 / 20",
+    "weekday": "星期五 · 端午連假前最後交易日",
+    "status": "已收盤 13:30",
+    "updated": "14:42",
+    "asof": "2026-06-20 14:42 (GMT+8)"
+  },
+  "taiex": {
+    "value": "24,156.32",
+    "change": "186.45",
+    "pct": "+0.78%",
+    "dir": "up",
+    "amount": "4,218",
+    "rangeLow": "23,988",
+    "rangeHigh": "24,201",
+    "prevClose": "23,969.87",
+    "prevCloseNum": 23969.87,
+    "intraday": [23990,23975,23958,23968,23945,23980,24005,24030,24010,24055,24040,24080,24065,24100,24085,24120,24135,24110,24145,24160,24150,24168,24172,24158,24165,24156],
+    "advancers": 612,
+    "unchanged": 78,
+    "decliners": 287,
+    "limitUp": 14,
+    "limitDown": 2,
+    "volumeShares": "7.42"
+  },
+  "tickers": [
+    {"name": "加權指數", "value": "24,156.32", "pct": "+0.78%", "dir": "up"},
+    {"name": "櫃買", "value": "238.45", "pct": "+1.02%", "dir": "up"},
+    {"name": "台指期", "value": "24,188", "pct": "+0.81%", "dir": "up"},
+    {"name": "台積電", "value": "1,148", "pct": "+1.23%", "dir": "up"},
+    {"name": "USD/TWD", "value": "31.85", "pct": "-0.12", "dir": "down"},
+    {"name": "道瓊", "value": "39,412", "pct": "+0.45%", "dir": "up"},
+    {"name": "那斯達克", "value": "17,985", "pct": "+0.82%", "dir": "up"},
+    {"name": "費半", "value": "5,340", "pct": "+1.34%", "dir": "up"}
+  ],
+  "tiles": [
+    {"label": "櫃買指數 OTC", "value": "238.45", "valueColor": "#ff4d4f", "sub": "▲ 2.40  +1.02%", "subColor": "#ff4d4f"},
+    {"label": "三大法人合計", "value": "+89.5", "valueColor": "#ff4d4f", "sub": "億元 · 連 3 日買超", "subColor": "#626c7e"},
+    {"label": "外資買賣超", "value": "+85.3", "valueColor": "#ff4d4f", "sub": "億元 · 期貨淨多單 28,640 口", "subColor": "#626c7e"},
+    {"label": "融資餘額", "value": "2,184", "valueColor": "#e6e9ef", "sub": "億元  -12.4 億", "subColor": "#1ec77b"}
+  ],
+  "gainers": [
+    {"name": "信驊", "code": "5274", "price": "4,150", "pct": "+9.8%"},
+    {"name": "世芯-KY", "code": "3661", "price": "3,890", "pct": "+8.4%"},
+    {"name": "緯穎", "code": "6669", "price": "2,415", "pct": "+7.1%"},
+    {"name": "創意", "code": "3443", "price": "1,720", "pct": "+6.5%"},
+    {"name": "智原", "code": "3035", "price": "545", "pct": "+5.9%"},
+    {"name": "健策", "code": "3653", "price": "1,090", "pct": "+5.2%"},
+    {"name": "京元電子", "code": "2449", "price": "142.5", "pct": "+4.8%"},
+    {"name": "譜瑞-KY", "code": "4966", "price": "1,365", "pct": "+4.3%"}
+  ],
+  "volume": [
+    {"name": "聯電", "code": "2303", "vol": "68,420", "pct": "+2.1%", "dir": "up"},
+    {"name": "台積電", "code": "2330", "vol": "42,180", "pct": "+1.2%", "dir": "up"},
+    {"name": "鴻海", "code": "2317", "vol": "38,650", "pct": "+1.9%", "dir": "up"},
+    {"name": "緯創", "code": "3231", "vol": "35,210", "pct": "+3.4%", "dir": "up"},
+    {"name": "友達", "code": "2409", "vol": "31,870", "pct": "-0.8%", "dir": "down"},
+    {"name": "長榮", "code": "2603", "vol": "28,940", "pct": "+2.8%", "dir": "up"},
+    {"name": "廣達", "code": "2382", "vol": "26,510", "pct": "+2.2%", "dir": "up"},
+    {"name": "南亞科", "code": "2408", "vol": "24,330", "pct": "+1.5%", "dir": "up"}
+  ],
+  "losers": [
+    {"name": "大立光", "code": "3008", "price": "2,355", "pct": "-5.1%"},
+    {"name": "玉晶光", "code": "3406", "price": "645", "pct": "-4.6%"},
+    {"name": "群創", "code": "3481", "price": "13.85", "pct": "-4.0%"},
+    {"name": "華邦電", "code": "2344", "price": "24.10", "pct": "-3.6%"},
+    {"name": "旺宏", "code": "2337", "price": "31.40", "pct": "-3.1%"},
+    {"name": "力積電", "code": "6770", "price": "12.05", "pct": "-2.8%"},
+    {"name": "中砂", "code": "1560", "price": "198.0", "pct": "-2.2%"},
+    {"name": "瑞昱", "code": "2379", "price": "498.0", "pct": "-1.9%"}
+  ],
+  "institutions": {
+    "foreign": "+85.3", "foreignDir": "up",
+    "trust": "+12.6", "trustDir": "up",
+    "dealer": "-8.4", "dealerDir": "down",
+    "buys": [
+      {"name": "台積電", "value": "+28.4"},
+      {"name": "鴻海", "value": "+15.2"},
+      {"name": "緯創", "value": "+9.8"}
+    ],
+    "sells": [
+      {"name": "大立光", "value": "-6.3"},
+      {"name": "國泰金", "value": "-4.8"}
+    ]
+  },
+  "sectors": [
+    {"name": "航運", "pct": "+2.34%", "pctNum": 2.34, "dir": "up"},
+    {"name": "半導體", "pct": "+1.45%", "pctNum": 1.45, "dir": "up"},
+    {"name": "電子零組件", "pct": "+1.12%", "pctNum": 1.12, "dir": "up"},
+    {"name": "汽車", "pct": "+1.05%", "pctNum": 1.05, "dir": "up"},
+    {"name": "生技醫療", "pct": "+0.87%", "pctNum": 0.87, "dir": "up"},
+    {"name": "金融保險", "pct": "+0.42%", "pctNum": 0.42, "dir": "up"},
+    {"name": "塑膠", "pct": "-0.33%", "pctNum": -0.33, "dir": "down"},
+    {"name": "鋼鐵", "pct": "-0.65%", "pctNum": -0.65, "dir": "down"},
+    {"name": "光電", "pct": "-1.21%", "pctNum": -1.21, "dir": "down"}
+  ],
+  "intl": [
+    {"name": "道瓊工業", "value": "39,412", "pct": "+0.45%", "dir": "up"},
+    {"name": "那斯達克", "value": "17,985", "pct": "+0.82%", "dir": "up"},
+    {"name": "S&P 500", "value": "5,612", "pct": "+0.61%", "dir": "up"},
+    {"name": "費城半導體", "value": "5,340", "pct": "+1.34%", "dir": "up"},
+    {"name": "日經 225", "value": "38,920", "pct": "+0.38%", "dir": "up"},
+    {"name": "韓國 KOSPI", "value": "2,745", "pct": "-0.22%", "dir": "down"},
+    {"name": "上證指數", "value": "3,058", "pct": "+0.15%", "dir": "up"},
+    {"name": "恆生指數", "value": "18,420", "pct": "-0.54%", "dir": "down"}
+  ],
+  "calendar": [
+    {"date": "06/20 五", "level": "today", "title": "台灣 5 月外銷訂單"},
+    {"date": "06/24 二", "level": "normal", "title": "美國 6 月消費者信心指數"},
+    {"date": "06/25 三", "level": "high", "title": "台積電除息 · 美國新屋銷售"},
+    {"date": "06/26 四", "level": "normal", "title": "美國 Q1 GDP 終值"},
+    {"date": "06/27 五", "level": "high", "title": "美國 5 月 PCE 物價指數"},
+    {"date": "07/01 二", "level": "normal", "title": "台灣 6 月製造業 PMI"}
+  ],
+  "news": [
+    {"tag": "焦點", "type": "focus", "title": "台積電法說在即,外資聚焦 AI 訂單能見度與 CoWoS 擴產進度", "meta": "半導體 · 14:20"},
+    {"tag": "航運", "type": "normal", "title": "紅海情勢推升運價,長榮、陽明帶量領漲貨櫃三雄", "meta": "航運 · 13:55"},
+    {"tag": "大盤", "type": "normal", "title": "美科技股收紅帶動電子權值走揚,加權指數收復 24,000 點", "meta": "大盤 · 13:40"},
+    {"tag": "籌碼", "type": "normal", "title": "投信連三日買超,聚焦中小型 IC 設計與機殼散熱題材", "meta": "籌碼 · 13:30"},
+    {"tag": "政策", "type": "normal", "title": "央行理監事會維持利率不變,關注下半年通膨與房市信用管制", "meta": "總經 · 11:10"},
+    {"tag": "記憶體", "type": "normal", "title": "記憶體報價回穩,南亞科、華邦電市場期待 Q3 旺季拉貨", "meta": "零組件 · 10:48"}
+  ]
+}

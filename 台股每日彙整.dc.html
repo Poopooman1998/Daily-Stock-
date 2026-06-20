@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#0a0c11;}
+  body{font-family:'Noto Sans TC',sans-serif;-webkit-font-smoothing:antialiased;}
+  ::-webkit-scrollbar{height:8px;width:8px;}
+  ::-webkit-scrollbar-thumb{background:#262d3a;border-radius:4px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+</style>
+</helmet>
+
+<div style="background:#0a0c11;min-height:100vh;color:#e6e9ef;padding:18px 24px 48px;">
+<div style="max-width:1680px;margin:0 auto;">
+
+  <!-- ============ TOP BAR ============ -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid #1c2230;">
+    <div style="display:flex;align-items:center;gap:13px;">
+      <div style="width:30px;height:30px;background:#d99a3a;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#0a0c11;font-weight:700;font-size:17px;font-family:'IBM Plex Mono',monospace;">台</div>
+      <div>
+        <div style="font-size:17px;font-weight:700;letter-spacing:.02em;line-height:1.1;">台股每日彙整</div>
+        <div style="font-size:10px;letter-spacing:.32em;color:#626c7e;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;">TAIEX DAILY BRIEF</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div style="text-align:right;line-height:1.25;">
+        <div style="font-size:15px;font-weight:500;font-family:'IBM Plex Mono',monospace;">{{ m.date }}</div>
+        <div style="font-size:11px;color:#9aa3b2;">{{ m.weekday }}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;padding:5px 11px;background:#161b25;border:1px solid #262d3a;border-radius:3px;">
+        <span style="width:7px;height:7px;border-radius:50%;background:#626c7e;display:inline-block;"></span>
+        <span style="font-size:12px;color:#9aa3b2;letter-spacing:.05em;">{{ m.status }}</span>
+      </div>
+      <div style="font-size:11px;color:#626c7e;font-family:'IBM Plex Mono',monospace;">最後更新 {{ m.updated }}</div>
+    </div>
+  </div>
+
+  <!-- ============ TICKER STRIP ============ -->
+  <div style="display:flex;align-items:stretch;border-bottom:1px solid #1c2230;overflow:hidden;">
+    <sc-for list="{{ tickers }}" as="tk" hint-placeholder-count="8">
+      <div style="display:flex;align-items:center;gap:7px;padding:11px 18px;border-right:1px solid #1c2230;flex:none;">
+        <span style="font-size:12px;color:#9aa3b2;">{{ tk.name }}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500;color:{{ tk.color }};">{{ tk.value }}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:{{ tk.color }};">{{ tk.pct }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- ============ HERO BAND ============ -->
+  <div style="display:grid;grid-template-columns:1.65fr 1fr;gap:14px;margin-top:16px;">
+
+    <!-- TAIEX big panel -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:18px 20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:3px;height:13px;background:#d99a3a;display:inline-block;border-radius:1px;"></span>
+            <span style="font-size:12px;letter-spacing:.14em;color:#9aa3b2;font-weight:600;">發行量加權股價指數 TAIEX</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:14px;margin-top:12px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:46px;font-weight:600;line-height:1;color:{{ taiexColor }};letter-spacing:-.01em;">{{ t.value }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:{{ taiexColor }};">{{ taiexArrow }} {{ t.change }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:{{ taiexColor }};">{{ t.pct }}</span>
+          </div>
+        </div>
+        <div style="text-align:right;display:flex;flex-direction:column;gap:9px;">
+          <div><div style="font-size:10px;color:#626c7e;letter-spacing:.08em;">成交金額</div><div style="font-family:'IBM Plex Mono',monospace;font-size:16px;margin-top:1px;">{{ t.amount }} <span style="font-size:11px;color:#9aa3b2;">億</span></div></div>
+          <div><div style="font-size:10px;color:#626c7e;letter-spacing:.08em;">今日區間</div><div style="font-family:'IBM Plex Mono',monospace;font-size:13px;margin-top:1px;color:#9aa3b2;">{{ t.rangeLow }} – {{ t.rangeHigh }}</div></div>
+        </div>
+      </div>
+
+      <!-- intraday chart -->
+      <div style="margin-top:14px;position:relative;">
+        <svg viewBox="0 0 300 110" preserveAspectRatio="none" style="width:100%;height:138px;display:block;">
+          <defs>
+            <linearGradient id="taiexArea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="{{ chartColor }}" stop-opacity="0.22"></stop>
+              <stop offset="100%" stop-color="{{ chartColor }}" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="{{ chartPrevY }}" x2="300" y2="{{ chartPrevY }}" stroke="#3a4250" stroke-width="0.7" stroke-dasharray="3 3"></line>
+          <polygon points="{{ chartArea }}" fill="url(#taiexArea)"></polygon>
+          <polyline points="{{ chartLine }}" fill="none" stroke="{{ chartColor }}" stroke-width="1.4" vector-effect="non-scaling-stroke"></polyline>
+        </svg>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:#626c7e;font-family:'IBM Plex Mono',monospace;">
+          <span>09:00</span><span>10:30</span><span>12:00</span><span>13:30</span>
+        </div>
+        <div style="position:absolute;top:0;right:0;font-size:10px;color:#626c7e;font-family:'IBM Plex Mono',monospace;">昨收 {{ t.prevClose }}</div>
+      </div>
+
+      <!-- 漲跌家數 bar -->
+      <div style="margin-top:14px;padding-top:13px;border-top:1px solid #1c2230;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px;">
+          <span style="color:#ff4d4f;">上漲 <span style="font-family:'IBM Plex Mono',monospace;">{{ t.advancers }}</span></span>
+          <span style="color:#9aa3b2;">平盤 <span style="font-family:'IBM Plex Mono',monospace;">{{ t.unchanged }}</span></span>
+          <span style="color:#1ec77b;">下跌 <span style="font-family:'IBM Plex Mono',monospace;">{{ t.decliners }}</span></span>
+        </div>
+        <div style="display:flex;height:6px;border-radius:3px;overflow:hidden;gap:1px;">
+          <div style="width:{{ advW }};background:#ff4d4f;"></div>
+          <div style="width:{{ flatW }};background:#4a525f;"></div>
+          <div style="width:{{ decW }};background:#1ec77b;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:9px;font-size:11px;color:#9aa3b2;">
+          <span>漲停 <span style="font-family:'IBM Plex Mono',monospace;color:#ff4d4f;">{{ t.limitUp }}</span></span>
+          <span>跌停 <span style="font-family:'IBM Plex Mono',monospace;color:#1ec77b;">{{ t.limitDown }}</span></span>
+          <span>成交量 <span style="font-family:'IBM Plex Mono',monospace;color:#e6e9ef;">{{ t.volumeShares }}</span> 億股</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- right stat tiles 2x2 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;">
+      <sc-for list="{{ tiles }}" as="tile" hint-placeholder-count="4">
+        <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 15px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="font-size:11px;color:#9aa3b2;letter-spacing:.06em;">{{ tile.label }}</div>
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:25px;font-weight:500;color:{{ tile.valueColor }};">{{ tile.value }}</div>
+            <div style="font-size:11px;margin-top:2px;color:{{ tile.subColor }};">{{ tile.sub }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ ROW A : rankings ============ -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;">
+
+    <!-- 漲幅榜 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="width:3px;height:12px;background:#ff4d4f;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">漲幅排行</span></div>
+        <span style="font-size:10px;color:#626c7e;font-family:'IBM Plex Mono',monospace;">PRICE / %</span>
+      </div>
+      <sc-for list="{{ gainers }}" as="g" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #161b25;font-size:13px;"><span style="width:14px;color:#626c7e;font-family:'IBM Plex Mono',monospace;font-size:11px;">{{ g.rank }}</span><span style="flex:1;">{{ g.name }}</span><span style="color:#626c7e;font-family:'IBM Plex Mono',monospace;font-size:11px;width:34px;">{{ g.code }}</span><span style="font-family:'IBM Plex Mono',monospace;width:50px;text-align:right;">{{ g.price }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#ff4d4f;width:52px;text-align:right;">{{ g.pct }}</span></div>
+      </sc-for>
+    </div>
+
+    <!-- 成交量排行 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="width:3px;height:12px;background:#d99a3a;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">成交量排行</span></div>
+        <span style="font-size:10px;color:#626c7e;font-family:'IBM Plex Mono',monospace;">張 / %</span>
+      </div>
+      <sc-for list="{{ volume }}" as="v" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #161b25;font-size:13px;"><span style="width:14px;color:#626c7e;font-family:'IBM Plex Mono',monospace;font-size:11px;">{{ v.rank }}</span><span style="flex:1;">{{ v.name }}</span><span style="color:#626c7e;font-family:'IBM Plex Mono',monospace;font-size:11px;width:34px;">{{ v.code }}</span><span style="font-family:'IBM Plex Mono',monospace;width:56px;text-align:right;color:#9aa3b2;font-size:12px;">{{ v.vol }}</span><span style="font-family:'IBM Plex Mono',monospace;color:{{ v.color }};width:48px;text-align:right;">{{ v.pct }}</span></div>
+      </sc-for>
+    </div>
+
+    <!-- 跌幅榜 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="width:3px;height:12px;background:#1ec77b;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">跌幅排行</span></div>
+        <span style="font-size:10px;color:#626c7e;font-family:'IBM Plex Mono',monospace;">PRICE / %</span>
+      </div>
+      <sc-for list="{{ losers }}" as="l" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #161b25;font-size:13px;"><span style="width:14px;color:#626c7e;font-family:'IBM Plex Mono',monospace;font-size:11px;">{{ l.rank }}</span><span style="flex:1;">{{ l.name }}</span><span style="color:#626c7e;font-family:'IBM Plex Mono',monospace;font-size:11px;width:34px;">{{ l.code }}</span><span style="font-family:'IBM Plex Mono',monospace;width:50px;text-align:right;">{{ l.price }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#1ec77b;width:52px;text-align:right;">{{ l.pct }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ ROW B : chips / sectors / intl ============ -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;">
+
+    <!-- 三大法人 / 籌碼 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px;"><span style="width:3px;height:12px;background:#d99a3a;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">三大法人買賣超</span><span style="font-size:10px;color:#626c7e;margin-left:auto;">單位：億元</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:13px;">
+        <div style="background:#0d1117;border:1px solid #1c2230;border-radius:3px;padding:9px 10px;"><div style="font-size:11px;color:#9aa3b2;">外資</div><div style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:{{ instForeignColor }};margin-top:3px;">{{ inst.foreign }}</div></div>
+        <div style="background:#0d1117;border:1px solid #1c2230;border-radius:3px;padding:9px 10px;"><div style="font-size:11px;color:#9aa3b2;">投信</div><div style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:{{ instTrustColor }};margin-top:3px;">{{ inst.trust }}</div></div>
+        <div style="background:#0d1117;border:1px solid #1c2230;border-radius:3px;padding:9px 10px;"><div style="font-size:11px;color:#9aa3b2;">自營商</div><div style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:{{ instDealerColor }};margin-top:3px;">{{ inst.dealer }}</div></div>
+      </div>
+      <div style="font-size:11px;color:#626c7e;letter-spacing:.08em;margin-bottom:6px;">外資買賣超個股</div>
+      <sc-for list="{{ instBuys }}" as="b" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #161b25;font-size:13px;"><span style="color:#626c7e;font-size:11px;width:30px;">{{ b.rowLabel }}</span><span style="flex:1;">{{ b.name }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#ff4d4f;">{{ b.value }}</span></div>
+      </sc-for>
+      <sc-for list="{{ instSells }}" as="s" hint-placeholder-count="2">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #161b25;font-size:13px;"><span style="color:#626c7e;font-size:11px;width:30px;">{{ s.rowLabel }}</span><span style="flex:1;">{{ s.name }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#1ec77b;">{{ s.value }}</span></div>
+      </sc-for>
+    </div>
+
+    <!-- 類股表現 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px;"><span style="width:3px;height:12px;background:#d99a3a;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">類股表現</span></div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <sc-for list="{{ sectors }}" as="sec" hint-placeholder-count="9">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+            <span style="width:72px;">{{ sec.name }}</span>
+            <div style="flex:1;height:7px;background:#0d1117;border-radius:3px;position:relative;overflow:hidden;">
+              <sc-if value="{{ sec.isUp }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:50%;top:0;height:100%;width:{{ sec.width }};background:#ff4d4f;"></div></sc-if>
+              <sc-if value="{{ sec.isDown }}"><div style="position:absolute;right:50%;top:0;height:100%;width:{{ sec.width }};background:#1ec77b;"></div></sc-if>
+            </div>
+            <span style="font-family:'IBM Plex Mono',monospace;color:{{ sec.color }};width:50px;text-align:right;">{{ sec.pct }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- 國際市場 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px;"><span style="width:3px;height:12px;background:#d99a3a;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">國際市場概況</span><span style="font-size:10px;color:#626c7e;margin-left:auto;">隔夜收盤</span></div>
+      <sc-for list="{{ intl }}" as="ix" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #161b25;font-size:13px;"><span style="flex:1;">{{ ix.name }}</span><span style="font-family:'IBM Plex Mono',monospace;width:64px;text-align:right;">{{ ix.value }}</span><span style="font-family:'IBM Plex Mono',monospace;color:{{ ix.color }};width:54px;text-align:right;">{{ ix.pct }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ ROW C : calendar / news ============ -->
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-top:14px;">
+
+    <!-- 經濟數據行事曆 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px;"><span style="width:3px;height:12px;background:#d99a3a;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">本週經濟數據行事曆</span></div>
+      <sc-for list="{{ calendar }}" as="c" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:11px;padding:7px 0;border-bottom:1px solid #161b25;"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9aa3b2;width:54px;">{{ c.date }}</span><span style="width:6px;height:6px;border-radius:50%;background:{{ c.dotColor }};flex:none;"></span><span style="flex:1;font-size:13px;">{{ c.title }}</span></div>
+      </sc-for>
+      <div style="display:flex;gap:14px;margin-top:11px;padding-top:10px;border-top:1px solid #1c2230;font-size:10px;color:#626c7e;"><span style="display:flex;align-items:center;gap:5px;"><span style="width:6px;height:6px;border-radius:50%;background:#ff4d4f;"></span>高度關注</span><span style="display:flex;align-items:center;gap:5px;"><span style="width:6px;height:6px;border-radius:50%;background:#d99a3a;"></span>今日</span><span style="display:flex;align-items:center;gap:5px;"><span style="width:6px;height:6px;border-radius:50%;background:#4a525f;"></span>一般</span></div>
+    </div>
+
+    <!-- 盤後重點新聞 -->
+    <div style="background:#11151c;border:1px solid #1c2230;border-radius:4px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px;"><span style="width:3px;height:12px;background:#d99a3a;display:inline-block;border-radius:1px;"></span><span style="font-size:12px;letter-spacing:.1em;color:#9aa3b2;font-weight:600;">盤後重點新聞</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 24px;">
+        <sc-for list="{{ news }}" as="n" hint-placeholder-count="6">
+          <div style="display:flex;gap:11px;padding:9px 0;border-bottom:1px solid #161b25;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:{{ n.tagColor }};border:1px solid {{ n.tagBorder }};background:{{ n.tagBg }};border-radius:2px;padding:1px 5px;height:fit-content;flex:none;">{{ n.tag }}</span><div><div style="font-size:13.5px;line-height:1.45;">{{ n.title }}</div><div style="font-size:11px;color:#626c7e;margin-top:3px;">{{ n.meta }}</div></div></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="margin-top:18px;padding-top:13px;border-top:1px solid #1c2230;display:flex;justify-content:space-between;font-size:10.5px;color:#626c7e;font-family:'IBM Plex Mono',monospace;">
+    <span>台股每日彙整 · 資料僅供參考,不構成投資建議</span>
+    <span>DATA AS OF {{ m.asof }}</span>
+  </div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null, error: null };
+
+  componentDidMount() {
+    fetch('./data.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) { this.setState({ data: d }); }.bind(this))
+      .catch(function (e) { this.setState({ error: String(e) }); }.bind(this));
+  }
+
+  color(dir) {
+    if (dir === 'down') return '#1ec77b';
+    if (dir === 'flat') return '#9aa3b2';
+    return '#ff4d4f';
+  }
+
+  dotColor(level) {
+    if (level === 'high') return '#ff4d4f';
+    if (level === 'today') return '#d99a3a';
+    return '#4a525f';
+  }
+
+  buildChart(prices, prevClose) {
+    if (!prices || !prices.length) return { line: '', area: '', prevY: '82', dir: 'up' };
+    var W = 300, top = 10, bot = 100;
+    var all = prices.concat([prevClose]);
+    var min = Math.min.apply(null, all), max = Math.max.apply(null, all);
+    var span = (max - min) || 1;
+    var xstep = W / (prices.length - 1);
+    var yOf = function (p) { return bot - (p - min) / span * (bot - top); };
+    var pts = prices.map(function (p, i) { return (i * xstep).toFixed(1) + ',' + yOf(p).toFixed(1); }).join(' ');
+    var area = pts + ' ' + W + ',110 0,110';
+    var last = prices[prices.length - 1];
+    return { line: pts, area: area, prevY: yOf(prevClose).toFixed(1), dir: last >= prevClose ? 'up' : 'down' };
+  }
+
+  empty() {
+    return {
+      loaded: false,
+      m: { date: '', weekday: '', status: '', updated: '', asof: '' },
+      t: { value: '', change: '', pct: '', amount: '', rangeLow: '', rangeHigh: '', prevClose: '', advancers: '', unchanged: '', decliners: '', limitUp: '', limitDown: '', volumeShares: '' },
+      inst: { foreign: '', trust: '', dealer: '' },
+      taiexColor: '#ff4d4f', taiexArrow: '▲', chartColor: '#ff4d4f', chartLine: '', chartArea: '', chartPrevY: '82',
+      advW: '0%', flatW: '0%', decW: '0%',
+      instForeignColor: '#ff4d4f', instTrustColor: '#ff4d4f', instDealerColor: '#1ec77b',
+      tickers: [], tiles: [], gainers: [], volume: [], losers: [], instBuys: [], instSells: [], sectors: [], intl: [], calendar: [], news: []
+    };
+  }
+
+  renderVals() {
+    var d = this.state.data;
+    if (!d) return this.empty();
+    var C = this.color.bind(this);
+    var t = d.taiex;
+    var chart = this.buildChart(t.intraday, t.prevCloseNum);
+    var chartColor = chart.dir === 'down' ? '#1ec77b' : '#ff4d4f';
+    var total = (t.advancers + t.unchanged + t.decliners) || 1;
+    var scale = 2.5; // %漲跌對應半條長度的縮放
+
+    return {
+      loaded: true,
+      m: d.meta,
+      t: t,
+      inst: d.institutions,
+      taiexColor: C(t.dir),
+      taiexArrow: t.dir === 'down' ? '▼' : '▲',
+      chartColor: chartColor,
+      chartLine: chart.line,
+      chartArea: chart.area,
+      chartPrevY: chart.prevY,
+      advW: (t.advancers / total * 100).toFixed(1) + '%',
+      flatW: (t.unchanged / total * 100).toFixed(1) + '%',
+      decW: (t.decliners / total * 100).toFixed(1) + '%',
+      instForeignColor: C(d.institutions.foreignDir),
+      instTrustColor: C(d.institutions.trustDir),
+      instDealerColor: C(d.institutions.dealerDir),
+      tickers: d.tickers.map(function (x) { return Object.assign({}, x, { color: C(x.dir) }); }),
+      tiles: d.tiles,
+      gainers: d.gainers.map(function (x, i) { return Object.assign({}, x, { rank: i + 1 }); }),
+      volume: d.volume.map(function (x, i) { return Object.assign({}, x, { rank: i + 1, color: C(x.dir) }); }),
+      losers: d.losers.map(function (x, i) { return Object.assign({}, x, { rank: i + 1 }); }),
+      instBuys: d.institutions.buys.map(function (x, i) { return Object.assign({}, x, { rowLabel: i === 0 ? '買超' : '' }); }),
+      instSells: d.institutions.sells.map(function (x, i) { return Object.assign({}, x, { rowLabel: i === 0 ? '賣超' : '' }); }),
+      sectors: d.sectors.map(function (x) {
+        var w = Math.min(Math.abs(x.pctNum) / scale * 50, 50).toFixed(1) + '%';
+        return Object.assign({}, x, { color: C(x.dir), isUp: x.dir === 'up', isDown: x.dir === 'down', width: w });
+      }),
+      intl: d.intl.map(function (x) { return Object.assign({}, x, { color: C(x.dir) }); }),
+      calendar: d.calendar.map(function (x) { return Object.assign({}, x, { dotColor: this.dotColor(x.level) }); }.bind(this)),
+      news: d.news.map(function (x) {
+        var focus = x.type === 'focus';
+        return Object.assign({}, x, {
+          tagColor: focus ? '#d99a3a' : '#9aa3b2',
+          tagBorder: focus ? '#3a3220' : '#2a3140',
+          tagBg: focus ? '#1a1710' : 'transparent'
+        });
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>
